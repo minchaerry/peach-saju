@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#FFFFFF">
 <title>도화 연애사주</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;900&display=swap">
 <style>[hidden]{display:none!important}
 
-/* 도화 연애사주 — B안 동양 에디토리얼 스킨 (먹 · 인주 · 한지) */
+/* 도화 연애사주 — 기본 토큰 (아래 '도화 스킨'이 색과 모양을 덮어써요) */
 :root {
   --bg: #F3F1EC;
   --surface: #FBFAF7;
@@ -186,6 +187,31 @@ button { font: inherit; cursor: pointer; }
 .teaser { display: grid; gap: 6px; }
 .veil { height: 48px; margin-top: -8px; border-radius: 0; background: repeating-linear-gradient(0deg, var(--surface2) 0 10px, transparent 10px 18px); opacity: .9; }
 .needp { color: var(--ink2); font-size: 14px !important; }
+/* 궁금하게 만드는 미리보기: 앞부분은 읽히고, 뒤로 갈수록 흐려져요 */
+.peek { position: relative; display: grid; gap: 6px; padding-bottom: 4px; }
+.peek .bw { filter: blur(4.5px); -webkit-user-select: none; user-select: none; }
+.peek .bblk { filter: blur(5px); -webkit-user-select: none; user-select: none; pointer-events: none; }
+.peek h4 { position: relative; }
+.peek h4::before { content: '🔒 '; font-size: 12px; }
+.peek .peek-fade { position: relative; max-height: 120px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 20%, transparent); mask-image: linear-gradient(#000 20%, transparent); }
+.peek-more { font-size: 13px; color: var(--ink2); margin: 2px 0 0 !important; }
+.prod.flash { outline: 2px solid var(--accent); outline-offset: 2px; transition: outline-color .6s; }
+.unlock.hook { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 700; }
+/* 하단 고정 열어보기 바 */
+.stickybuy { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--surface); border-top: 1.5px solid var(--rule); padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 12px; transform: translateY(110%); transition: transform .25s ease; }
+.stickybuy.on { transform: none; }
+.stickybuy { flex-direction: column; align-items: stretch; gap: 8px; }
+.stickybuy .sb-hook { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink); text-align: center; }
+.stickybuy .btn { flex: none; width: 100%; }
+.stickybuy .sb-l { flex: 0 1 auto; min-width: 0; }
+.stickybuy .sb-l small { display: block; font-size: 11px; color: var(--ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stickybuy .sb-l b { display: block; font-size: 15px; font-family: var(--f-display); white-space: nowrap; }
+.stickybuy .btn { flex: 1; width: auto; min-height: 50px; padding: 8px 12px; letter-spacing: 0; display: grid; gap: 2px; line-height: 1.3; }
+.stickybuy .btn span { font-size: 15px; }
+.stickybuy .btn small { font-size: 11px; font-weight: 500; opacity: .85; }
+body.sb-on .toast { bottom: calc(120px + env(safe-area-inset-bottom, 0px)); }
+body.sb-on { padding-bottom: 116px; }
+@media (prefers-reduced-motion: reduce) { .stickybuy { transition: none; } }
 .ptype { font-weight: 700; font-size: 16px !important; font-family: var(--f-display); }
 .ptags { color: var(--accent); font-weight: 600; font-size: 14px !important; }
 
@@ -312,7 +338,6 @@ details ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
 
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 11px 16px; border-radius: 0; font-size: 14px; max-width: calc(100% - 32px); z-index: 20; }
 @media (prefers-reduced-motion: no-preference) {
-  #result > * { animation: rise 0.35s ease both; }
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 }
 
@@ -404,19 +429,178 @@ button.cd { font: inherit; color: inherit; cursor: pointer; }
 .pdont { font-family: var(--f-body); font-size: 14px; line-height: 1.7; color: var(--ink2); border-left: 3px solid var(--ink2); padding-left: 10px; margin-top: 6px; }
 .pmsgs .row { display: flex; gap: 8px; flex-wrap: wrap; }
 .pml-lock { font-size: 13px; color: var(--ink2); border: 1px dashed var(--ink2); padding: 10px 12px; }
+
+/* ===== 도화 스킨: 복숭아꽃 분홍 · 복숭아 · 자두빛 먹 ===== */
+:root {
+  --bg: #FFFFFF; --surface: #FFFFFF; --surface2: #F7F4F5; --blush: #FFFFFF;
+  --ink: #241A1E; --ink2: #6E6267; --head-ink2: #6E6267;
+  --line: #EEE7EA; --rule: #DDD2D6;
+  --accent: #D6336C; --accent-ink: #B4245A; --accent-soft: #FFF0F4; --on-accent: #FFFFFF;
+  --hero-bg: #FFF6F8; --hero-ink: #241A1E; --hero-ink2: #6E6267; --hero-pink: #D6336C;
+  --e0: #3C8A5A; --e1: #D0453B; --e2: #A87A1F; --e3: #7E6F75; --e4: #3A5C99;
+  --lift: 0 10px 24px -18px rgba(74, 29, 49, .45);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141113; --surface: #1C181A; --surface2: #262124; --blush: #141113;
+    --ink: #F5EFF1; --ink2: #B5A9AE; --head-ink2: #B5A9AE;
+    --line: #322B2E; --rule: #4A4145;
+    --accent: #F06C97; --accent-ink: #F59AB8; --accent-soft: #33202A; --on-accent: #1A0E14;
+    --hero-bg: #221A1E; --hero-ink: #F5EFF1; --hero-ink2: #B5A9AE; --hero-pink: #F06C97;
+    --e0: #6FC497; --e1: #EE7F76; --e2: #DDB25E; --e3: #BDB0B5; --e4: #8EADE6;
+    --lift: 0 10px 24px -18px rgba(0, 0, 0, .7);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141113; --surface: #1C181A; --surface2: #262124; --blush: #141113;
+  --ink: #F5EFF1; --ink2: #B5A9AE; --head-ink2: #B5A9AE;
+  --line: #322B2E; --rule: #4A4145;
+  --accent: #F06C97; --accent-ink: #F59AB8; --accent-soft: #33202A; --on-accent: #1A0E14;
+  --hero-bg: #221A1E; --hero-ink: #F5EFF1; --hero-ink2: #B5A9AE; --hero-pink: #F06C97;
+  --e0: #6FC497; --e1: #EE7F76; --e2: #DDB25E; --e3: #BDB0B5; --e4: #8EADE6;
+}
+
+/* 상단 · 표지 */
+.topbar { border-bottom: 0; padding: 14px 0 6px; }
+.seal { background: none; width: 40px; height: 40px; border-radius: 0; }
+.seal svg { width: 100%; height: 100%; display: block; }
+.brand b { letter-spacing: .5px; }
+.brand small { letter-spacing: 1px; }
+.head { background: var(--blush); border: 0; border-radius: 28px; padding: 20px 20px 18px 22px; flex-direction: column; gap: 10px; }
+.head-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; }
+.head-top h1 { padding-top: 10px; font-size: clamp(26px, 7.2vw, 34px); }
+.peachday { flex: none; position: relative; width: 116px; height: 116px; margin: -8px -10px -6px 0; }
+.peachday svg { width: 100%; height: 100%; display: block; }
+.peachday .vert { position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%); font-size: 25px; letter-spacing: 3px; color: #fff; text-shadow: 0 1px 8px rgba(160, 40, 75, .55); }
+.head .hcol { padding-top: 0; gap: 10px; }
+.head .lead { color: var(--head-ink2); }
+.todayline { border-top: 1px solid rgba(199, 54, 95, .22); }
+
+/* 카드 · 결과 표지 */
+.card { border: 1px solid var(--line); border-radius: 22px; }
+.hero { border-radius: 26px; }
+.hero .tag, .hero .pairnum, .ndbtn .dd-n { color: var(--hero-pink); }
+.hz-line { border-top-color: rgba(255, 241, 244, .16); }
+.hero .chip { border-color: rgba(255, 241, 244, .3); }
+.hero .chip.acc { border-color: var(--hero-pink); color: #FFD6E0; }
+
+/* 버튼 · 입력 */
+.btn, .btn2, .chip2, .price, .chip, .legend span, .toast, .linkbtn { border-radius: 999px; }
+.btn { letter-spacing: .2px; }
+.btn2 { border-color: var(--rule); }
+.btn2:hover, .chip2:hover { background: var(--accent-soft); color: var(--ink); }
+.chip2 { border-color: var(--line); background: var(--surface); }
+input[type="date"], input[type="time"], input[type="text"],
+#wiz input[type=text], #wiz input[type=time], #wiz select, #wiz textarea {
+  background-color: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 14px;
+}
+input[type="date"]:focus, input[type="time"]:focus, input[type="text"]:focus, #wiz select:focus, #wiz textarea:focus { border-color: var(--accent); outline: none; }
+.seg, .wseg, .ctabs { border: 1.5px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--surface); }
+.seg input:checked + label, .wseg button[aria-pressed="true"], .ctab[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.mtabs { border: 1.5px solid var(--line); border-radius: 999px; background: var(--surface); padding: 4px; gap: 4px; box-shadow: var(--lift); }
+.mtabs button { border-right: 0; border-radius: 999px; min-height: 42px; }
+.mtabs button[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+.toc { border-top: 0; gap: 6px; }
+.toc button { flex: 0 1 auto; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 14px; background: var(--bg); min-height: 38px; }
+.toc button::before { content: none; }
+
+/* 단계형 입력 */
+.wbar { height: 6px; border-radius: 999px; background: var(--surface2); overflow: hidden; }
+.wbar i { border-radius: 999px; }
+.opts { border-top: 0; gap: 8px; }
+.opt { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 14px; }
+.opts.two .opt:nth-child(odd), .opts.grid12 .opt { border-right: 1.5px solid var(--line); }
+.opts.grid12 { border: 0; gap: 6px; }
+.opts.grid12 .opt { border-radius: 14px; }
+.opts.grid12 .opt:nth-child(3n) { border-right: 1.5px solid var(--line); }
+.opt:hover { background: var(--surface); border-color: var(--rule); }
+.opts .opt[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); border-color: var(--accent); }
+.opts .opt[aria-pressed="true"] .k, .opts.grid12 .opt[aria-pressed="true"] .k { color: var(--accent); }
+.opts .opt[aria-pressed="true"] small { color: var(--ink2); }
+.intro { border: 0; border-radius: 24px; }
+.sum { border: 0; background: var(--surface); border-radius: 18px; padding: 2px 14px; }
+.quote { border-left-color: var(--rule); }
+.wloading { border-radius: 26px; }
+.wloading .wv span.on, .lsteps li.done::before { color: var(--hero-pink); }
+.lsteps li::before { color: rgba(255, 241, 244, .35); }
+
+/* 풀이 블록 */
+.pils, .years, .dd { border: 1.5px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--surface); }
+.bar { border-radius: 999px; }
+.leg > span::before { border-radius: 50%; }
+.cmine, .msg, .caldetail, .lock, .pml-lock { border-radius: 14px; }
+.hard { border: 0; border-radius: 16px; background: var(--accent-soft); }
+.growh { border-top-color: var(--line); }
+.qa .ans { border-top: 0; border-radius: 18px; }
+.askrow { border: 1.5px solid var(--line); border-radius: 999px; background: var(--surface); padding: 4px; overflow: hidden; }
+.askrow .btn { min-height: 44px; }
+.warn { border-radius: 12px; }
+.note { border: 0; background: var(--surface2); border-radius: 14px; padding: 10px 14px; }
+.mynote { border: 0; background: var(--surface); border-radius: 18px; padding: 14px 16px; }
+.ndbtn { border-radius: 16px; }
+.dday { border-top: 1px solid var(--line); }
+
+/* 상품 · 달력 */
+.prod { border: 1px solid var(--line); border-radius: 18px; }
+.pc-lock { border: 1.5px solid var(--accent); border-radius: 16px; }
+.cal { border: 0; gap: 4px; }
+.cd { border: 0; border-radius: 10px; }
+.stickybuy { border-top: 1px solid var(--line); border-radius: 22px 22px 0 0; }
+.stickybuy.on { box-shadow: 0 -10px 28px -18px rgba(74, 29, 49, .5); }
+body { word-break: keep-all; overflow-wrap: break-word; }
+/* 스크롤 따라 글씨가 나오는 모션 (JS가 켜졌고 모션 줄이기 설정이 아닐 때만) */
+html.rv-on .rv { opacity: 0; transform: translateY(16px); transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
+html.rv-on .rv.in { opacity: 1; transform: none; }
+html.rv-on .big .w { display: inline-block; opacity: 0; transform: translateY(.45em); filter: blur(6px); transition: opacity .55s ease, transform .55s cubic-bezier(.2,.7,.2,1), filter .55s ease; }
+html.rv-on .big.in-words .w { opacity: 1; transform: none; filter: none; }
+
+/* 흰 바탕 + 분홍 포인트: 분홍은 버튼·선택·핵심 숫자에만 */
+.head { background: transparent; border-radius: 0; padding: 8px 2px 20px; border-bottom: 1px solid var(--line); }
+.peachday { width: 92px; height: 92px; margin: -4px -4px 0 0; }
+.peachday .vert { font-size: 20px; }
+.todayline { border-top: 1px solid var(--line); }
+.todayline b { color: var(--accent); }
+.card { border-color: var(--line); border-radius: 18px; }
+.hero { border: 1px solid #F6DCE4; border-radius: 20px; }
+.hero .e0 { color: var(--e0); } .hero .e1 { color: var(--e1); } .hero .e2 { color: var(--e2); } .hero .e3 { color: var(--e3); } .hero .e4 { color: var(--e4); }
+.hz-line { border-top-color: #F2DDE4; }
+.hero .chip { border-color: var(--rule); color: var(--ink); }
+.hero .chip.acc { border-color: var(--accent); color: var(--accent-ink); }
+.wloading { border: 1px solid #F6DCE4; }
+.lsteps li::before { color: var(--rule); }
+.ndbtn { border: 1px solid #F6DCE4; }
+.intro, .rules, .mynote, .sum { border: 1px solid var(--line); }
+.intro { border-radius: 18px; }
+.opt { border-width: 1px; }
+.opts.two .opt:nth-child(odd), .opts.grid12 .opt, .opts.grid12 .opt:nth-child(3n) { border-right-width: 1px; }
+.pils, .years, .dd { border-width: 1px; background: var(--surface); }
+.mtabs { box-shadow: 0 6px 16px -14px rgba(36, 26, 30, .35); }
+.hard { background: var(--accent-soft); }
+.note { background: var(--surface2); }
+.cd[data-k="avoid"], .legend [data-k="avoid"] { background: #4A4145; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero, :root:not([data-theme="light"]) .wloading, :root:not([data-theme="light"]) .ndbtn { border-color: var(--line); } :root:not([data-theme="light"]) .hz-line { border-top-color: var(--line); } }
+:root[data-theme="dark"] .hero, :root[data-theme="dark"] .wloading, :root[data-theme="dark"] .ndbtn { border-color: var(--line); }
+
+
+/* 공유 · 원칙 · 푸터 */
+.cardimg { border-radius: 18px; border-color: var(--line); }
+.rules { border: 0; background: var(--surface); border-radius: 22px; }
+.rule .k { border-radius: 50%; }
+.foot { border-top: 1px solid var(--line); }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="topbar">
-    <div class="brand"><span class="seal" aria-hidden="true">桃</span><span><b>도화</b><small>AI 연애 命式 讀本</small></span></div>
+    <div class="brand"><span class="seal" aria-hidden="true"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="pkS" cx="36%" cy="40%" r="72%"><stop offset="0" stop-color="#FFE6D2"/><stop offset=".45" stop-color="#FFB592"/><stop offset="1" stop-color="#EC6A8C"/></radialGradient></defs><path d="M60 31C31 17 7 42 13 72c6 29 33 41 47 32 14 9 41-3 47-32 6-30-18-55-47-41z" fill="url(#pkS)"/><path d="M60 33c-8 20-9 48 0 70" fill="none" stroke="#D9557A" stroke-width="2.4" stroke-linecap="round" opacity=".5"/><path d="M60 32c0-7 2-13 6-17" fill="none" stroke="#7A4B3A" stroke-width="3.2" stroke-linecap="round"/><path d="M64 21c10-14 32-14 40-6-12 12-30 14-40 6z" fill="#6E9E64"/><path d="M66 20c13-4 26-6 36-5" fill="none" stroke="#4F7D49" stroke-width="1.4" stroke-linecap="round"/><path d="M58 23c-8-12-24-12-30-6 8 10 22 12 30 6z" fill="#8DB97F"/></svg></span><span><b>도화</b><small>AI 연애 命式 讀本</small></span></div>
     <span class="date" id="tdDate"></span>
   </header>
   <section class="head" aria-label="소개와 오늘의 일진">
-    <div class="vcol" aria-hidden="true"><span class="vert" id="tdGz"></span><span class="daymark">日</span></div>
-    <div class="hcol">
-      <span class="tag">도화 연애사주</span>
+    <div class="head-top">
       <h1>내 연애, 사주로 정확히 짚어보기</h1>
+      <div class="peachday" aria-hidden="true"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="pkH" cx="36%" cy="40%" r="72%"><stop offset="0" stop-color="#FFE6D2"/><stop offset=".45" stop-color="#FFB592"/><stop offset="1" stop-color="#EC6A8C"/></radialGradient></defs><path d="M60 31C31 17 7 42 13 72c6 29 33 41 47 32 14 9 41-3 47-32 6-30-18-55-47-41z" fill="url(#pkH)"/><path d="M60 33c-8 20-9 48 0 70" fill="none" stroke="#D9557A" stroke-width="2.4" stroke-linecap="round" opacity=".5"/><path d="M60 32c0-7 2-13 6-17" fill="none" stroke="#7A4B3A" stroke-width="3.2" stroke-linecap="round"/><path d="M64 21c10-14 32-14 40-6-12 12-30 14-40 6z" fill="#6E9E64"/><path d="M66 20c13-4 26-6 36-5" fill="none" stroke="#4F7D49" stroke-width="1.4" stroke-linecap="round"/><path d="M58 23c-8-12-24-12-30-6 8 10 22 12 30 6z" fill="#8DB97F"/></svg><span class="vert" id="tdGz"></span></div>
+    </div>
+    <div class="hcol">
       <p class="lead">생년월일시로 연애 패턴, 끌리는 사람, 지금 고민에 맞는 처방과 올해·내년의 인연 흐름을 계산해요. 오락·참고용이에요.</p>
       <p class="todayline" id="tdLine"></p>
     </div>
@@ -2543,24 +2727,158 @@ var LOVE = (function () {
     return '<section class="card" id="sec-premium"><span class="tag">프리미엄</span><h2>더 깊이 보는 리포트</h2>' +
       '<p class="sub">결제 연결 전이라 지금은 "전체 보기"로 미리 열어 볼 수 있어요. 실제 서비스에서는 이 버튼이 결제로 이어져요.</p>' +
       '<div class="prods">' +
-      '<div class="prod" id="prod-cal"></div><div class="prod" id="prod-manual"></div><div class="prod" id="prod-reunion"></div>' +
+      '<div class="prod" id="prod-manual"></div><div class="prod" id="prod-reunion"></div>' +
       '<div class="prod soon"><div class="prod-head"><h3>2027 정미년 신년 연애운</h3><span class="price">12월 오픈</span></div>' +
       '<p>새해 월별 연애 흐름, 도화가 들어오는 달, 배우자성이 움직이는 달을 한 번에 정리해요.</p></div>' +
       '</div></section>';
   }
 
   var unlocked = {};
-  function prodBlock(id, title, price, desc, teaser, full, needsPartner) {
+  // 글 안의 단어를 앞쪽은 보이게, 뒤쪽은 띄엄띄엄 흐리게 감싸요 (1 = 흐림)
+  var PEEK_PAT = [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1];
+  function peekify(el, keepRatio) {
+    var nodes = [], w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) if (n.nodeValue.trim()) nodes.push(n);
+    var total = 0;
+    nodes.forEach(function (t) { total += t.nodeValue.split(/\s+/).filter(Boolean).length; });
+    var keep = Math.max(5, Math.round(total * keepRatio)), idx = 0;
+    nodes.forEach(function (t) {
+      var frag = document.createDocumentFragment(), buf = '', cur = false;
+      function flush() {
+        if (!buf) return;
+        if (cur) { var s = document.createElement('span'); s.className = 'bw'; s.textContent = buf; frag.appendChild(s); }
+        else frag.appendChild(document.createTextNode(buf));
+        buf = '';
+      }
+      t.nodeValue.split(/(\s+)/).forEach(function (p) {
+        if (!p) return;
+        if (!p.trim()) { buf += p; return; }
+        var b = idx >= keep && PEEK_PAT[(idx - keep) % PEEK_PAT.length] === 1;
+        if (b !== cur) { flush(); cur = b; }
+        buf += p; idx++;
+      });
+      flush();
+      t.parentNode.replaceChild(frag, t);
+    });
+  }
+  // 전체 풀이에서 첫 단락은 반쯤 읽히게, 다음 소제목은 보이고 본문은 흐리게 만들어요
+  function peekHtml(full, maxHeads) {
+    var box = document.createElement('div');
+    box.innerHTML = full;
+    var kids = Array.prototype.slice.call(box.children), out = document.createElement('div');
+    out.className = 'peek';
+    var heads = 0, firstText = false, hidden = 0, fade = null;
+    kids.forEach(function (k) {
+      var isHead = k.tagName === 'H4';
+      if (isHead) heads++;
+      if (heads > maxHeads) { if (isHead) hidden++; return; }
+      if (isHead) { out.appendChild(k); return; }
+      var isText = /^(P|UL|OL)$/.test(k.tagName) || k.classList.contains('msg');
+      if (isText && !firstText) {
+        firstText = true; peekify(k, k.tagName === 'P' ? 0.55 : 0.3); out.appendChild(k); return;
+      }
+      k.classList.add('bblk'); k.setAttribute('aria-hidden', 'true');
+      out.appendChild(k);
+    });
+    // 맨 끝 블록은 아래로 사라지게
+    var last = out.lastElementChild;
+    if (last && last.tagName !== 'H4') {
+      fade = document.createElement('div'); fade.className = 'peek-fade';
+      out.replaceChild(fade, last); fade.appendChild(last);
+    }
+    var h = out.outerHTML;
+    if (hidden) h += '<p class="peek-more">이 밖에 ' + hidden + '가지가 더 있어요.</p>';
+    return h;
+  }
+
+  var prodMeta = {};
+  // ===== 사람마다 다른 CTA 문구 =====
+  function josa(w, a, b) { var c = w.charCodeAt(w.length - 1); return w + ((c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28) ? a : b); }
+  function who() {
+    var w = window.DOHWA_WHO || {}, name = (w.name || '').trim();
+    return { nm: name ? name + '님, ' : '', p: w.p || '그 사람' };
+  }
+  var GOOD_WORD = { crush: '잘될 날', some: '잘될 날', dating: '더 가까워질 날', crisis: '다시 가까워질 날', ex: '연락이 닿기 좋은 날', breakup: '연락이 닿기 좋은 날', none: '인연이 닿기 좋은 날' };
+  function calCopy(rest, duo) {
+    var u = who(), gw = GOOD_WORD[concernKey] || '좋은 날';
+    var k = rest.filter(function (d) { return d.kind === 'best' || d.kind === 'date' || ((concernKey === 'ex' || concernKey === 'breakup') && d.kind === 'talk'); }).length;
+    var av = rest.filter(function (d) { return d.kind === 'avoid'; }).length;
+    if (k) return {
+      hook: u.nm + (duo ? josa(u.p, '과', '와') + ' ' : '') + gw + '이 이번 달에 ' + k + '일 더 숨어 있어요',
+      cta: (duo ? josa(u.p, '과', '와') + ' ' : '') + gw.replace(/ 날$/, '') + ' 날짜 보기'
+    };
+    if (av) return { hook: u.nm + (duo ? u.p + '에게 ' : '') + '연락하면 안 되는 날이 ' + av + '일 숨어 있어요', cta: '피해야 할 날짜 보기' };
+    return { hook: u.nm + '남은 ' + rest.length + '일의 흐름이 잠겨 있어요', cta: '남은 ' + rest.length + '일 보기' };
+  }
+  function manualCopy(mn) {
+    var u = who(), P = u.p;
+    var cta = (concernKey === 'dating' || concernKey === 'crisis') ? josa(P, '이', '가') + ' 식는 포인트 보기'
+      : (concernKey === 'ex' || concernKey === 'breakup') ? josa(P, '이', '가') + ' 질투할 때 보기'
+      : josa(P, '이', '가') + ' 마음 여는 방식 보기';
+    return { hook: u.nm + josa(P, '은', '는') + ' ' + josa(mn.type, '이에요', '예요'), cta: cta };
+  }
+  function reunionCopy(rn) {
+    var u = who(), P = u.p, n = rn.good.length;
+    if (concernKey !== 'ex' && concernKey !== 'breakup') return { hook: u.nm + '두 사람은 ' + rn.level, cta: '헤어져도 다시 이어지는 구조 보기' };
+    return { hook: u.nm + '두 사람은 ' + rn.level, cta: n ? P + '에게 연락 닿기 쉬운 달 ' + n + '개 보기' : P + '에게 보낼 첫 문장 보기' };
+  }
+  window.DOHWA_CTA = function () { if (lastA) renderPremium(); };
+  function prodBlock(id, title, price, desc, teaser, full, needsPartner, cta) {
     var el = $(id);
     if (!el) return;
     var open = !!unlocked[id];
+    prodMeta[id] = needsPartner ? null : { title: title, price: price, cta: (cta && cta.cta) || cta || '전체 보기', hook: cta && cta.hook, open: open };
+    if (cta && cta.cta) cta = cta.cta;
     var body = needsPartner
       ? '<p class="needp">상대 생년월일이 필요해요. 상대 생일을 넣으면 열려요. <button type="button" class="linkbtn addp">상대 생일 넣기</button></p>'
       : '<div class="teaser">' + teaser + '</div>' +
-        (open ? '<div class="full">' + full + '</div>' : '<div class="veil" aria-hidden="true"></div><div class="lock-row"><span class="price">' + esc(price) + '</span><button class="btn2 unlock" type="button" data-id="' + id + '">전체 보기</button></div>');
+        (open ? '<div class="full">' + full + '</div>' : peekHtml(full, id === 'prod-cal' ? 2 : 4) + '<div class="lock-row"><span class="price">' + esc(price) + '</span><button class="btn2 unlock hook" type="button" data-id="' + id + '">' + esc(cta || '전체 보기') + '</button></div>');
     el.innerHTML = '<div class="prod-head"><h3>' + esc(title) + '</h3>' + (open ? '<span class="price on">열림</span>' : '') + '</div><p class="pdesc">' + esc(desc) + '</p>' + body;
     var btn = el.querySelector('.unlock');
-    if (btn) btn.addEventListener('click', function () { unlocked[id] = true; renderPremium(); toast('결제 연결 전 미리보기로 열었어요'); });
+    if (btn) btn.addEventListener('click', function () { unlockProd(id); });
+  }
+  function unlockProd(id) { unlocked[id] = true; renderPremium(); toast('결제 연결 전 미리보기로 열었어요'); }
+
+  // ===== 하단 고정 "열어보기" 바 =====
+  var sbTarget = null, sbVisibleProd = false;
+  function stickyPick() {
+    var ex = concernKey === 'ex' || concernKey === 'breakup' || concernKey === 'crisis';
+    var order = lastB ? (ex ? ['prod-reunion', 'prod-manual', 'sec-pcal'] : ['prod-manual', 'sec-pcal', 'prod-reunion']) : ['sec-pcal'];
+    for (var i = 0; i < order.length; i++) { var m = prodMeta[order[i]]; if (m && !m.open) return order[i]; }
+    return null;
+  }
+  function stickyUpdate() {
+    var bar = $('stickybuy');
+    if (!bar) return;
+    var res = $('result');
+    var show = !!sbTarget && res && !res.hidden && window.scrollY > 500 && !sbVisibleProd;
+    bar.classList.toggle('on', show);
+    document.body.classList.toggle('sb-on', show);
+  }
+  function stickySetup() {
+    var bar = $('stickybuy');
+    if (!bar) {
+      bar = document.createElement('div'); bar.id = 'stickybuy'; bar.className = 'stickybuy';
+      document.body.appendChild(bar);
+      window.addEventListener('scroll', stickyUpdate, { passive: true });
+    }
+    sbTarget = stickyPick(); sbVisibleProd = false;
+    if (!sbTarget) { bar.innerHTML = ''; stickyUpdate(); return; }
+    var m = prodMeta[sbTarget];
+    bar.innerHTML = '<p class="sb-hook">' + esc(m.hook || m.title) + '</p>' +
+      '<button type="button" class="btn"><span>' + esc(m.cta) + '</span><small>' + esc(m.title) + ' · ' + esc(m.price.replace('예시 가격 ', '')) + ' · 결제 연결 전 미리보기</small></button>';
+    bar.querySelector('button').onclick = function () {
+      var el = $(sbTarget);
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 1400);
+    };
+    if (window.IntersectionObserver) {
+      if (stickySetup.io) stickySetup.io.disconnect();
+      stickySetup.io = new IntersectionObserver(function (es) { sbVisibleProd = es[0].isIntersecting; stickyUpdate(); }, { threshold: 0.25 });
+      stickySetup.io.observe($(sbTarget));
+    }
+    stickyUpdate();
   }
 
   function calHtml(c) {
@@ -2591,14 +2909,14 @@ var LOVE = (function () {
       '오늘부터 30일 동안 연락하기 좋은 날, 고백·데이트 좋은 날, 피할 날을 날짜로 짚어요.',
       (lastB ? '' : '<p class="needp">상대 생일을 넣으면 두 사람 기준 달력으로 바뀌어요. <button type="button" class="linkbtn addp">상대 생일 넣기</button></p>') + '<p>앞으로 30일 중 <b>고백·데이트 좋은 날 ' + cnt('best') + '일</b>, <b>데이트 좋은 날 ' + cnt('date') + '일</b>, <b>피할 날 ' + cnt('avoid') + '일</b>이 있어요.</p>' +
       (b0 ? '<p>가장 가까운 좋은 날은 <b>' + b0.m + '월 ' + b0.d + '일(' + b0.wd + ')</b>이에요.' + (unlocked['prod-cal'] ? '' : ' 나머지 날짜와 이유는 전체 보기에서 확인하세요.') + '</p>' : ''),
-      calHtml(c), false);
+      calHtml(c), false, calCopy(c.days, !!lastB));
 
     if (lastB && lastPr) {
       var mn = LOVE.partnerManual(lastB);
       prodBlock('prod-manual', '그 사람 연애 설명서', '예시 가격 3,900원',
         '상대 사주 기준으로 그 사람이 연애를 시작하고, 표현하고, 질투하고, 이별하는 방식을 풀어요.',
         '<p class="ptype">' + esc(mn.type) + '</p><p class="ptags">' + mn.tags.map(esc).join(' ') + '</p><p>' + esc(mn.one) + '</p>',
-        mn.sections.map(function (s) { return '<h4>' + esc(s.h) + '</h4><p>' + esc(s.p) + '</p>'; }).join(''), false);
+        mn.sections.map(function (s) { return '<h4>' + esc(s.h) + '</h4><p>' + esc(s.p) + '</p>'; }).join(''), false, manualCopy(mn));
       var rn = LOVE.reunion(lastA, lastB, lastPr, td);
       prodBlock('prod-reunion', '재회 정밀 리포트', '예시 가격 4,900원',
         '헤어진 원인의 구조, 다시 연락이 오기 쉬운 달, 단계별 연락 문구, 재회해도 반복될 문제를 정리해요.',
@@ -2612,11 +2930,12 @@ var LOVE = (function () {
         '<h4>단계별 연락 문구</h4>' + ['첫 연락', '답이 왔을 때', '만남 제안'].map(function (t, i) { return '<div class="msg"><b>' + t + '</b><p>' + esc(rn.msgs[i]) + '</p></div>'; }).join('') +
         '<h4>절대 하지 말 것</h4><ul class="signs">' + rn.dont.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
         '<h4>다시 만나도 반복될 문제</h4><p>' + esc(rn.repeat) + '</p>' +
-        '<p class="warn">상대가 분명히 연락을 원치 않는다고 했거나 연락을 차단했다면 거기서 멈추세요. 재회는 두 사람이 모두 원할 때만 의미가 있어요.</p>', false);
+        '<p class="warn">상대가 분명히 연락을 원치 않는다고 했거나 연락을 차단했다면 거기서 멈추세요. 재회는 두 사람이 모두 원할 때만 의미가 있어요.</p>', false, reunionCopy(rn));
     } else {
       prodBlock('prod-manual', '그 사람 연애 설명서', '예시 가격 3,900원', '상대 사주 기준으로 그 사람이 연애를 시작하고, 표현하고, 질투하고, 이별하는 방식을 풀어요.', '', '', true);
       prodBlock('prod-reunion', '재회 정밀 리포트', '예시 가격 4,900원', '헤어진 원인의 구조, 다시 연락이 오기 쉬운 달, 단계별 연락 문구, 재회해도 반복될 문제를 정리해요.', '', '', true);
     }
+    stickySetup();
   }
 
   function askHtml() {
@@ -2662,6 +2981,20 @@ var LOVE = (function () {
     return y;
   }
 
+  // 공유 카드 오른쪽 위에 그리는 복숭아 (화면 로고와 같은 모양)
+  function drawPeach(ctx, x, y, w) {
+    var k = w / 120;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    var g = ctx.createRadialGradient(43, 48, 2, 43, 48, 86);
+    g.addColorStop(0, '#FFE6D2'); g.addColorStop(.45, '#FFB592'); g.addColorStop(1, '#EC6A8C');
+    ctx.fillStyle = g; ctx.fill(new Path2D('M60 31C31 17 7 42 13 72c6 29 33 41 47 32 14 9 41-3 47-32 6-30-18-55-47-41z'));
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'rgba(217,85,122,.5)'; ctx.lineWidth = 2.4; ctx.stroke(new Path2D('M60 33c-8 20-9 48 0 70'));
+    ctx.strokeStyle = '#7A4B3A'; ctx.lineWidth = 3.2; ctx.stroke(new Path2D('M60 32c0-7 2-13 6-17'));
+    ctx.fillStyle = '#6E9E64'; ctx.fill(new Path2D('M64 21c10-14 32-14 40-6-12 12-30 14-40 6z'));
+    ctx.fillStyle = '#8DB97F'; ctx.fill(new Path2D('M58 23c-8-12-24-12-30-6 8 10 22 12 30 6z'));
+    ctx.restore();
+  }
   function makeCard(a) {
     var token = ++cardToken;
     try {
@@ -2671,27 +3004,28 @@ var LOVE = (function () {
       var draw = function () {
         if (token !== cardToken) return;
         var p = a.p, dm = a.dm, deep = LOVE.DEEP[p.day.s];
-        var COL = ['#6FC497', '#EE7F76', '#DDB25E', '#BDB7AC', '#8EADE6'];
-        ctx.fillStyle = '#161514'; ctx.fillRect(0, 0, 1080, 1350);
-        ctx.fillStyle = '#E2675E'; ctx.textBaseline = 'alphabetic';
+        var COL = ['#3C8A5A', '#D0453B', '#A87A1F', '#7E6F75', '#3A5C99'];
+        ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, 1080, 1350);
+        drawPeach(ctx, 880, 48, 130);
+        ctx.fillStyle = '#D6336C'; ctx.textBaseline = 'alphabetic';
         ctx.font = '700 40px "Noto Sans KR", sans-serif';
         ctx.fillText('도화 연애사주', 90, 130);
-        ctx.fillStyle = '#F3F1EC';
+        ctx.fillStyle = '#241A1E';
         ctx.font = '900 84px "Noto Serif KR", serif';
         var y = wrapText(ctx, dm.type, 90, 290, 900, 110);
-        ctx.fillStyle = '#C8C3B9';
+        ctx.fillStyle = '#6E6267';
         ctx.font = '500 34px "Noto Sans KR", sans-serif';
         ctx.fillText('일간 ' + dm.name + ' (' + dm.nick + ')', 90, y + 20);
-        ctx.fillStyle = '#F3F1EC';
+        ctx.fillStyle = '#241A1E';
         ctx.font = '600 46px "Noto Serif KR", serif';
         y = wrapText(ctx, deep.one, 90, y + 120, 900, 70);
-        ctx.fillStyle = '#E2675E';
+        ctx.fillStyle = '#D6336C';
         ctx.font = '500 38px "Noto Sans KR", sans-serif';
         ctx.fillText(deep.tags.join('  '), 90, y + 40);
         var pls = [p.hour, p.day, p.month, p.year], labs = ['시', '일', '월', '년'];
         for (var i = 0; i < 4; i++) {
           var x = 90 + i * 232, pil = pls[i];
-          ctx.fillStyle = '#24221F';
+          ctx.fillStyle = '#FFF3F6';
           ctx.fillRect(x, 900, 212, 340);
           ctx.textAlign = 'center';
           ctx.font = '900 110px "Noto Serif KR", serif';
@@ -2699,14 +3033,14 @@ var LOVE = (function () {
             ctx.fillStyle = COL[pil.sE]; ctx.fillText(pil.sH, x + 106, 1095);
             ctx.fillStyle = COL[pil.bE]; ctx.fillText(pil.bH, x + 106, 1222);
           } else {
-            ctx.fillStyle = '#C8C3B9'; ctx.fillText('?', x + 106, 1170);
+            ctx.fillStyle = '#6E6267'; ctx.fillText('?', x + 106, 1170);
           }
-          ctx.fillStyle = '#C8C3B9';
+          ctx.fillStyle = '#6E6267';
           ctx.font = '500 28px "Noto Sans KR", sans-serif';
           ctx.fillText(labs[i] + '주', x + 106, 952);
           ctx.textAlign = 'left';
         }
-        ctx.fillStyle = '#C8C3B9';
+        ctx.fillStyle = '#6E6267';
         ctx.font = '500 30px "Noto Sans KR", sans-serif';
         ctx.fillText('나도 내 연애사주 확인하기', 90, 1290);
         var url = cv.toDataURL('image/png');
@@ -2791,7 +3125,7 @@ var LOVE = (function () {
     return ({ plain: '특별한 흐름이 없는 날이에요. 평소처럼 지내면 돼요.' })[kind] || '';
   }
   function pcalData() {
-    if (!lastA || !lastB) return null;
+    if (!lastA) return null;
     var now = new Date(), td = { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate() };
     var c = LOVE.calendar30(lastA, lastB, td);
     var ni = -1;
@@ -2800,6 +3134,7 @@ var LOVE = (function () {
     return c;
   }
   window.DOHWA_NEXTDAY = function () {
+    if (!lastB) return null;
     var c = pcalData();
     if (!c || c.nextIdx < 0) return null;
     var d = c.days[c.nextIdx];
@@ -2908,12 +3243,18 @@ var LOVE = (function () {
     var cnt = function (arr, k) { return arr.filter(function (d) { return d.kind === k; }).length; };
     var nd = c.nextIdx >= 0 ? c.days[c.nextIdx] : null;
     var item = function (d) { var i = c.days.indexOf(d); return '<li><b>' + d.m + '월 ' + d.d + '일(' + d.wd + ') · ' + esc(d.kindName) + (i === 0 ? ' · 오늘' : ' · D-' + i) + '</b><br>' + esc(pcalAct(d.kind)) + (d.why.length ? ' <span class="why">' + esc(d.why.join(', ')) + '</span>' : '') + (pcalMsgs(d) ? ' <button type="button" class="linkbtn pgo" data-i="' + i + '">이날 보낼 문장 보기</button>' : '') + '</li>'; };
-    var h = '<span class="tag">궁합 × 30일</span><h2>그 사람과의 30일 달력</h2>' +
-      '<p class="sub">두 사람의 일지·일간과 매일의 일진을 같이 비교해서, 그 사람에게 다가가기 좋은 날과 피할 날을 짚어요. 지금 고민(' + esc(LOVE.concernInfo(lastA, lastGender, concernKey).label) + ')에 맞춰 할 일이 바뀌어요.</p>';
+    var duo = !!lastB, price = duo ? '예시 가격 4,900원' : '예시 가격 2,900원';
+    var cc = calCopy(rest, duo);
+    prodMeta['sec-pcal'] = { title: duo ? '그 사람과의 30일 달력' : '30일 연애 달력', price: price, cta: cc.cta, hook: cc.hook, open: open };
+    var h = duo
+      ? '<span class="tag">궁합 × 30일</span><h2>그 사람과의 30일 달력</h2>' +
+        '<p class="sub">두 사람의 일지·일간과 매일의 일진을 같이 비교해서, 그 사람에게 다가가기 좋은 날과 피할 날을 짚어요. 지금 고민(' + esc(LOVE.concernInfo(lastA, lastGender, concernKey).label) + ')에 맞춰 할 일이 바뀌어요.</p>'
+      : '<span class="tag">30일 연애 달력</span><h2>앞으로 30일, 언제 움직일까</h2>' +
+        '<p class="sub">내 일지·일간과 매일의 일진을 비교해서 연락·고백·데이트하기 좋은 날과 피할 날을 짚어요. <button type="button" class="linkbtn addp">상대 생일 넣기</button>를 하면 두 사람 기준으로 바뀌어요.</p>';
     if (nd) {
       h += '<div class="dday"><span class="dd-n">' + (c.nextIdx === 0 ? '오늘' : 'D-' + c.nextIdx) + '</span><div><b>' + nd.m + '월 ' + nd.d + '일(' + nd.wd + ') · ' + esc(nd.kindName) + '</b><p>' + esc(pcalAct(nd.kind)) + '</p></div></div>' + ((open || c.nextIdx < FREE) ? pcalMsgHtml(nd) : '<p class="pml-lock">이날 보낼 문장 2개는 30일 전체를 열면 볼 수 있어요.</p>');
     } else {
-      h += '<div class="dday"><span class="dd-n">—</span><div><b>앞으로 30일은 잔잔해요</b><p>두 사람 기운이 크게 맞는 날은 없어요. 날짜보다 평소의 꾸준함이 더 중요한 달이에요.</p></div></div>';
+      h += '<div class="dday"><span class="dd-n">—</span><div><b>앞으로 30일은 잔잔해요</b><p>' + (duo ? '두 사람 기운이' : '내 기운과') + ' 크게 맞는 날은 없어요. 날짜보다 평소의 꾸준함이 더 중요한 달이에요.</p></div></div>';
     }
     h += '<div class="calhead">' + ['일', '월', '화', '수', '목', '금', '토'].map(function (w) { return '<span>' + w + '</span>'; }).join('') + '</div>' +
       '<div class="cal">' + cells + '</div>' +
@@ -2921,12 +3262,12 @@ var LOVE = (function () {
       '<div class="caldetail" id="pcaldetail" aria-live="polite"><p class="sub">날짜를 누르면 그날 할 일이 나와요.</p></div>';
     if (!open) {
       h += '<div class="pc-lock"><p>남은 ' + rest.length + '일 안에 <b>고백·데이트 좋은 날 ' + cnt(rest, 'best') + '일</b>, <b>데이트 좋은 날 ' + cnt(rest, 'date') + '일</b>, <b>피할 날 ' + cnt(rest, 'avoid') + '일</b>이 숨어 있어요. 좋은 날마다 그날 보낼 문장도 2개씩 들어 있어요.</p>' +
-        '<div class="lock-row"><span class="price">예시 가격 4,900원</span><button class="btn pc-unlock" type="button">30일 전체 열기</button></div>' +
+        '<div class="lock-row"><span class="price">' + price + '</span><button class="btn pc-unlock" type="button">' + esc(cc.cta) + '</button></div>' +
         '<p class="sub">이번 주 7일은 무료로 볼 수 있어요. 결제 연결 전이라 지금은 버튼을 누르면 미리 열려요.</p></div>';
     } else {
       h += '<h3>가장 좋은 날</h3><ul class="signs">' + (c.best.length ? c.best.map(item).join('') : '<li>이번 30일에는 특별히 좋은 날이 없어요.</li>') + '</ul>' +
         '<h3>피할 날</h3><ul class="signs">' + (c.avoid.length ? c.avoid.map(item).join('') : '<li>크게 피할 날은 없어요.</li>') + '</ul>' +
-        '<p class="sub">두 사람의 일지·일간과 그날 일진의 합·충을 단순 계산한 참고용이에요. 날짜는 자정 기준이에요.</p>';
+        '<p class="sub">' + (duo ? '두 사람의' : '내') + ' 일지·일간과 그날 일진의 합·충을 단순 계산한 참고용이에요. 날짜는 자정 기준이에요.</p>';
     }
     el.innerHTML = h;
     Array.prototype.forEach.call(el.querySelectorAll('.pcd'), function (b) {
@@ -2934,7 +3275,7 @@ var LOVE = (function () {
         var i = +b.getAttribute('data-i'), d = c.days[i], box = $('pcaldetail');
         Array.prototype.forEach.call(el.querySelectorAll('.pcd'), function (x) { x.classList.toggle('sel', x === b); });
         if (!open && i >= FREE) {
-          box.innerHTML = '<p><b>' + d.m + '월 ' + d.d + '일(' + d.wd + ')</b> · 잠겨 있어요</p><p class="sub">30일 전체를 열면 이날 두 사람의 흐름과 할 일을 볼 수 있어요.</p>';
+          box.innerHTML = '<p><b>' + d.m + '월 ' + d.d + '일(' + d.wd + ')</b> · 잠겨 있어요</p><p class="sub">30일 전체를 열면 이날의 흐름과 할 일을 볼 수 있어요.</p>';
           return;
         }
         box.innerHTML = '<p><b>' + d.m + '월 ' + d.d + '일(' + d.wd + ') · ' + esc(d.kindName) + (i === 0 ? ' · 오늘' : ' · D-' + i) + '</b></p><p>' + esc(pcalAct(d.kind)) + '</p>' + (d.why.length ? '<p class="why">' + esc(d.why.join(', ')) + '</p>' : '') + pcalMsgHtml(d);
@@ -2955,11 +3296,11 @@ var LOVE = (function () {
       pr = LOVE.pair(a, b); lastPr = pr; lastB = b; lastNow = { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate() };
     }
 
-    $('result').innerHTML = heroHtml(a) +
+    $('result').innerHTML = heroHtml(a) + '<section class="card" id="sec-pcal"></section>' +
       (pr ? '<div class="mtabs" role="tablist"><button type="button" role="tab" data-tab="me" aria-selected="true">내 사주</button><button type="button" role="tab" data-tab="pair" aria-selected="false">궁합</button><button type="button" role="tab" data-tab="guide" aria-selected="false">공략</button></div>' : '') +
       '<div id="tab-me" class="tabpanel">' + tocHtml('me') + pillarsHtml(a, inp) + patternHtml(a) + matchHtml(a, gender) +
       '<section class="card prose" id="cbox"></section>' + yearsHtml(a) + elemHtml(a) + '</div>' +
-      (pr ? '<div id="tab-pair" class="tabpanel" hidden>' + tocHtml('pair') + pairHtml(a, b, pr) + '<section class="card" id="sec-pcal"></section></div>' : '') +
+      (pr ? '<div id="tab-pair" class="tabpanel" hidden>' + tocHtml('pair') + pairHtml(a, b, pr) + '</div>' : '') +
       (pr ? '<div id="tab-guide" class="tabpanel" hidden>' + tocHtml('guide') + guideHtml() + '</div>' : '') +
       askHtml() + premiumHtml() + shareHtml();
     renderConcern();
@@ -3200,7 +3541,7 @@ var CTX={
 };
 var SIJIN=[['子','자시','23:30~01:29','00:30'],['丑','축시','01:30~03:29','02:30'],['寅','인시','03:30~05:29','04:30'],['卯','묘시','05:30~07:29','06:30'],['辰','진시','07:30~09:29','08:30'],['巳','사시','09:30~11:29','10:30'],['午','오시','11:30~13:29','12:30'],['未','미시','13:30~15:29','14:30'],['申','신시','15:30~17:29','16:30'],['酉','유시','17:30~19:29','18:30'],['戌','술시','19:30~21:29','20:30'],['亥','해시','21:30~23:29','22:30']];
 var REGIONS=[['seoul','서울·경기·인천'],['gangwon','강원'],['chung','대전·세종·충청'],['jeolla','광주·전라'],['gyeong','대구·부산·울산·경상'],['jeju','제주'],['abroad','해외'],['unknown','잘 모르겠어요']];
-var REL=['친구·지인','직장·학교','소개·앱','전 연인','기타'];
+var REL=['친구·지인','직장·학교','취미·동호회','소개·앱','전 연인','기타'];
 var PNAME={crush:'좋아하는 사람',some:'썸 상대',dating:'연인',crisis:'연인',ex:'그 사람',breakup:'헤어진 사람',none:'요즘 궁금한 사람'};
 var NUMS=['壹','貳','參','肆','伍','陸','柒','捌','玖','拾','拾壹','拾貳','拾參'];
 
@@ -3361,6 +3702,8 @@ function finish(){
 }
 function showResult(mine){
   setMode('result'); if(HEAD) HEAD.hidden=false;
+  window.DOHWA_WHO={name:mine?S.name:'',p:mine?(PNAME[S.concern]||'그 사람'):'그 사람'};
+  if(window.DOHWA_CTA) window.DOHWA_CTA();
   var c=cObj(),cx=(CTX[S.concern]||[]).map(function(q){return S.ctx[q.id];}).filter(Boolean).join(' · ');
   NOTE.innerHTML= mine?
     '<span class="who">'+(S.name?esc(S.name)+' 님의':'나의')+' 연애사주</span>'+(c?'<span class="ctx">'+esc(c.t)+(cx?' · '+esc(cx):'')+(S.pon&&needP()?' · 궁합 포함':'')+'</span>':'')+
@@ -3378,6 +3721,53 @@ document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e
 window.DOHWA_SHARED=function(){showResult(S.myHash===location.hash);};
 
 if(/^#r-/.test(location.hash)&&!RES.hidden) showResult(S.myHash===location.hash); else render();
+})();
+</script>
+<script>
+/* ===== 스크롤 등장 모션 =====
+   화면에 들어오는 순간 문단·블록이 아래에서 떠오르고,
+   결과 표지의 연애 타입 이름은 단어 하나씩 나타나요. */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.documentElement.classList.add('rv-on');
+  var SEL = '.head-top, .head .hcol > *, #wiz .intro > *, #result .card > *:not(.prods):not(.locks), #result .prods > *, #result .locks > *, .mynote, .rules > *';
+  var batch = [], raf = 0;
+  var io = new IntersectionObserver(function (es) {
+    var vis = es.filter(function (e) { return e.isIntersecting; })
+      .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+    vis.forEach(function (e, i) {
+      var el = e.target;
+      el.style.transitionDelay = Math.min(i * 60, 300) + 'ms';
+      el.classList.add('in');
+      io.unobserve(el);
+      if (el.classList.contains('big')) words(el, i);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+  function words(el, i) {
+    if (!el.querySelector('.w')) {
+      var t = el.textContent;
+      el.textContent = '';
+      t.split(/(\s+)/).forEach(function (w) {
+        if (!w) return;
+        if (!w.trim()) { el.appendChild(document.createTextNode(w)); return; }
+        var s = document.createElement('span'); s.className = 'w'; s.textContent = w; el.appendChild(s);
+      });
+      el.setAttribute('aria-label', t);
+    }
+    Array.prototype.forEach.call(el.querySelectorAll('.w'), function (w, k) { w.style.transitionDelay = (Math.min(i * 60, 300) + 120 + k * 110) + 'ms'; });
+    requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('in-words'); }); });
+  }
+  function scan() {
+    raf = 0;
+    Array.prototype.forEach.call(document.querySelectorAll(SEL), function (el) {
+      if (el.classList.contains('rv') || el.closest('.mtabs') || el.classList.contains('mtabs')) return;
+      el.classList.add('rv'); io.observe(el);
+    });
+  }
+  function later() { if (!raf) raf = requestAnimationFrame(scan); }
+  new MutationObserver(later).observe(document.body, { childList: true, subtree: true });
+  scan();
 })();
 </script>
 </body>
